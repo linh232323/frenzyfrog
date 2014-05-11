@@ -57,7 +57,8 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>G:\Cocos2dx\framework\cocos2d-x-2.2.1\projects\dhbc\lib;$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>G:\Cocos2dx\framework\cocos2d-x-2.2.1\projects\dhbc\lib;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
@@ -77,7 +78,7 @@
       <DisableSpecificWarnings>4267;4251;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libExtensions.lib;libcocos2d.lib;libCocosDenshion.lib;opengl32.lib;glew32.lib;libBox2d.lib;libchipmunk.lib;libcurl_imp.lib;pthreadVCE2.lib;websockets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libExtensions.lib;libcocos2d.lib;libCocosDenshion.lib;opengl32.lib;glew32.lib;libBox2d.lib;libchipmunk.lib;libcurl_imp.lib;pthreadVCE2.lib;websockets.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -134,6 +135,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="Classes\CCParallaxNodeExtras.cpp" />
     <ClCompile Include="Classes\EndScene.cpp" />
     <ClCompile Include="Classes\GameLayer.cpp" />
+    <ClCompile Include="Classes\UserModel.cpp" />
+    <ClCompile Include="Classes\Utils.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +148,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="Classes\CCParallaxNodeExtras.h" />
     <ClInclude Include="Classes\EndScene.h" />
     <ClInclude Include="Classes\GameLayer.h" />
+    <ClInclude Include="Classes\UserModel.h" />
+    <ClInclude Include="Classes\Utils.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

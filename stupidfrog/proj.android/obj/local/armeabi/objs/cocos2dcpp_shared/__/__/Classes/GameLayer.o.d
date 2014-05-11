@@ -206,7 +206,19 @@ obj/local/armeabi/objs/cocos2dcpp_shared/__/__/Classes/GameLayer.o: \
  jni/../../Classes/EndScene.h jni/../../Classes/CCFrog.h \
  jni/../../Classes/GameLayer.h jni/../../Classes/CCParallaxNodeExtras.h \
  /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/SimpleAudioEngine.h \
- /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/Export.h
+ /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/Export.h \
+ jni/../../Classes/UserModel.h jni/../../Classes/lib/sqlite/sqlite3.h \
+ jni/../../Classes/Utils.h jni/../../Classes/lib/rapidjson/document.h \
+ jni/../../Classes/lib/rapidjson/reader.h \
+ jni/../../Classes/lib/rapidjson/rapidjson.h \
+ /cygdrive/g/Cocos2dx/android-ndk-r9/sources/cxx-stl/gnu-libstdc++/4.6/include/cassert \
+ jni/../../Classes/lib/rapidjson/internal/pow10.h \
+ jni/../../Classes/lib/rapidjson/internal/stack.h \
+ /cygdrive/g/Cocos2dx/android-ndk-r9/sources/cxx-stl/gnu-libstdc++/4.6/include/csetjmp \
+ jni/../../Classes/lib/rapidjson/internal/strfunc.h \
+ jni/../../Classes/lib/rapidjson/rapidjson.h \
+ /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../cocos2dx/platform/android/jni/JniHelper.h \
+ /cygdrive/g/Cocos2dx/android-ndk-r9/platforms/android-14/arch-arm/usr/include/jni.h
 
 jni/../../Classes/CCLeaf.h:
 
@@ -627,3 +639,31 @@ jni/../../Classes/CCParallaxNodeExtras.h:
 /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/SimpleAudioEngine.h:
 
 /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/Export.h:
+
+jni/../../Classes/UserModel.h:
+
+jni/../../Classes/lib/sqlite/sqlite3.h:
+
+jni/../../Classes/Utils.h:
+
+jni/../../Classes/lib/rapidjson/document.h:
+
+jni/../../Classes/lib/rapidjson/reader.h:
+
+jni/../../Classes/lib/rapidjson/rapidjson.h:
+
+/cygdrive/g/Cocos2dx/android-ndk-r9/sources/cxx-stl/gnu-libstdc++/4.6/include/cassert:
+
+jni/../../Classes/lib/rapidjson/internal/pow10.h:
+
+jni/../../Classes/lib/rapidjson/internal/stack.h:
+
+/cygdrive/g/Cocos2dx/android-ndk-r9/sources/cxx-stl/gnu-libstdc++/4.6/include/csetjmp:
+
+jni/../../Classes/lib/rapidjson/internal/strfunc.h:
+
+jni/../../Classes/lib/rapidjson/rapidjson.h:
+
+/cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../cocos2dx/platform/android/jni/JniHelper.h:
+
+/cygdrive/g/Cocos2dx/android-ndk-r9/platforms/android-14/arch-arm/usr/include/jni.h:

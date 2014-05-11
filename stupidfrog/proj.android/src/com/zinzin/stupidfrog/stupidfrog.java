@@ -26,7 +26,15 @@ package com.zinzin.stupidfrog;
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 public class stupidfrog extends Cocos2dxActivity{
 	
@@ -41,7 +49,56 @@ public class stupidfrog extends Cocos2dxActivity{
     	
     	return glSurfaceView;
     }
-
+    public static String getDeviceUniqueId() {
+		TelephonyManager telephonyManager = (TelephonyManager)getContext().getSystemService(Context.TELEPHONY_SERVICE);
+		if (telephonyManager != null
+				&& !TextUtils.isEmpty(telephonyManager.getDeviceId())) {
+			return telephonyManager.getDeviceId();
+		}
+		WifiManager wifiMan = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInf = wifiMan.getConnectionInfo();
+		System.out.println("MAC" + wifiInf.getMacAddress());
+		if(wifiInf.getMacAddress() == "")
+			return "1";
+		return wifiInf.getMacAddress();
+	}
+	
+	
+    	// get device name
+    public static  String getDeviceName() 
+    {
+		String manufacturer = Build.MANUFACTURER;
+		String model = Build.MODEL;
+		if (model.startsWith(manufacturer)) 
+		{
+			return capitalize(model);
+		}
+		else 
+		{
+			return capitalize(manufacturer) + " " + model;
+		}
+	}		 	
+	public static boolean checkNetworkConnectivity()
+	{
+		ConnectivityManager conMgr = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo i = conMgr.getActiveNetworkInfo();
+		if (i == null || !i.isConnected() || !i.isAvailable())
+		{
+		    return false;
+		}
+		return true;
+	}
+	private static  String capitalize(String s) {
+			if (s == null || s.length() == 0) {
+				return "";
+			}
+			char first = s.charAt(0);
+			if (Character.isUpperCase(first)) {
+				return s;
+			} else {
+				return Character.toUpperCase(first) + s.substring(1);
+			}
+	}
     static {
         System.loadLibrary("cocos2dcpp");
     }     

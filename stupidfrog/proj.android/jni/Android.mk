@@ -10,6 +10,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
                    ../../Classes/GameLayer.cpp \
                    ../../Classes/CCLeaf.cpp \
+                   ../../Classes/UserModel.cpp \
+                   ../../Classes/lib/sqlite/sqlite3.c \
+                   ../../Classes/Utils.cpp \
                    ../../Classes/BeginScene.cpp \
                    ../../Classes/CCParallaxNodeExtras.cpp \
                    ../../Classes/EndScene.cpp

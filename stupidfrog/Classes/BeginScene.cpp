@@ -1,5 +1,5 @@
 #include "BeginScene.h"
-#include "GameLayer.h";
+#include "GameLayer.h"
 
 USING_NS_CC;
 
@@ -37,7 +37,7 @@ bool BeginScene::init()
 	this->addChild(main_bg);
 	
 	CCMenu *menu = CCMenu::create();
-
+	
 	CCMenuItemSpriteCustom * playItem = CCMenuItemSpriteCustom::create(
 		CCSprite::createWithSpriteFrameName("touch_normal.png"),
 		CCSprite::createWithSpriteFrameName("touch.png"),

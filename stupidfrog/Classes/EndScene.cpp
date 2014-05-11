@@ -1,14 +1,29 @@
 #include "EndScene.h"
-#include "GameLayer.h";
+#include "GameLayer.h"
+#include "UserModel.h"
 USING_NS_CC;
 
-CCScene* EndScene::scene()
+EndScene* EndScene::createWithResult(int result){
+	 EndScene *endscene = new EndScene();
+    if(endscene && endscene->initWithResult(result))
+    {
+        endscene->autorelease();
+        return endscene;
+    }
+    else
+    {
+        delete endscene;
+        return NULL;
+    }
+}
+
+CCScene* EndScene::scene(int result)
 {
     // 'scene' is an autorelease object
     CCScene *scene = CCScene::create();
     
     // 'layer' is an autorelease object
-    EndScene *layer = EndScene::create();
+    EndScene *layer = EndScene::createWithResult(result);
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -18,7 +33,7 @@ CCScene* EndScene::scene()
 }
 
 // on "init" you need to initialize your instance
-bool EndScene::init()
+bool EndScene::initWithResult(int result)
 {
     //////////////////////////////
     // 1. super init first
@@ -76,8 +91,30 @@ bool EndScene::init()
 //	menu->addChild(itemClose);
 	itemClose->setPosition(ccp(winSize.width/2 + panel->getContentSize().width/2 - 20,winSize.height/2 + panel->getContentSize().height/2 - 20));
 
+	
+
 	this->addChild(menu);
 	menu->setPosition(0,0);
+
+	CCSprite *lbScore = CCSprite::createWithSpriteFrameName("score_lb.png");
+	lbScore->setPosition(ccp(winSize.width *0.3,winSize.height/2));
+	this->addChild(lbScore);
+
+	CCSprite *lbBest = CCSprite::createWithSpriteFrameName("best_lb.png");
+	lbBest->setPosition(ccp(winSize.width *0.3,winSize.height/2 + 150));	
+	this->addChild(lbBest);
+
+	CCLabelBMFont *lbcScore = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getCrtScore())->getCString(),"UVNBanhMiRed.fnt");
+	lbcScore->setPosition(ccp(winSize.width *0.6,winSize.height/2 + 17));
+	lbcScore->setScale(1.4f);
+	this->addChild(lbcScore);
+
+	CCLabelBMFont *lbcBest = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getBestScore())->getCString(),"UVNBanhMiRed.fnt");
+	lbcBest->setScale(1.4f);
+	lbcBest->setPosition(ccp(winSize.width *0.6,winSize.height/2 + 167));
+	
+	this->addChild(lbcBest);
+
     return true;
 }
 

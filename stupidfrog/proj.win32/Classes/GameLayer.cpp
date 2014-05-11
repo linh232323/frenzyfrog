@@ -2,7 +2,7 @@
 #include "EndScene.h"
 #include "CCFrog.h"
 #include "GameLayer.h"
-
+#include "UserModel.h"
 
 
 #define MAX_LEAF_COUNT 30
@@ -45,6 +45,7 @@ bool GameLayer::init()
     }
 	winSize = CCDirector::sharedDirector()->getWinSize();
 	origin = CCDirector::sharedDirector()->getVisibleOrigin();
+	User::Instance().LoadData();
 
     srand(time(NULL));
     this->setTouchEnabled(true);
@@ -330,10 +331,28 @@ void GameLayer::updateFrog(float dt)
 	}
 }
 void GameLayer::onTheLeaf()
-{
-	isReadyForNext = true;
+{	
 	if(crtLeafObj != NULL)
 	{
+		int depth = ((CCLeaf *)crtLeafObj)->getDepth();
+		int typeLeaf = ((CCLeaf *)crtLeafObj)->getLeafType();
+		if(depth != crtDepth + 1 || typeLeaf == 0)
+		{
+			changeEndSceneResult();
+		}
+		else
+		{
+			crtDepth += 1;
+			m_nScore += 10;
+			lbScore->setString(CCString::createWithFormat("Score: %d",m_nScore)->getCString());
+
+			int vec = 25 * crtDepth + 100;
+			if(vec > MAX_VELOCITY)
+				vec = MAX_VELOCITY;
+			this->setVelocity(vec);
+		}
+		isReadyForNext = true;
+
 		CCScaleTo *scaleOutAction = CCScaleTo::create(0.0f,1.1f);
 		CCScaleTo *scaleInAction = CCScaleTo::create(0.2f,1.00f);
 		CCSequence *sq = CCSequence::create(scaleOutAction,scaleInAction,NULL);
@@ -342,28 +361,16 @@ void GameLayer::onTheLeaf()
 }
 void GameLayer::changeEndSceneResult()
 {
-	CCScene *pScene = EndScene::scene();				
+	User::Instance().setCrtScore(m_nScore);
+	if(User::Instance().getBestScore() < User::Instance().getCrtScore()){
+		User::Instance().setBestScore(User::Instance().getCrtScore());
+		User::Instance().SaveData();
+	}
+	CCScene *pScene = EndScene::scene(RESULT_C);				
 	CCDirector::sharedDirector()->replaceScene(pScene);
 }
 
 void GameLayer::completeJump()
 {
-	int depth = ((CCLeaf *)crtLeafObj)->getDepth();
-	int typeLeaf = ((CCLeaf *)crtLeafObj)->getLeafType();
-	if(depth != crtDepth + 1 || typeLeaf == 0)
-	{
-		changeEndSceneResult();
-	}
-	else
-	{
-		crtDepth += 1;
-		m_nScore += 10;
-		lbScore->setString(CCString::createWithFormat("Score: %d",m_nScore)->getCString());
-
-		int vec = 25 * crtDepth + 100;
-		if(vec > MAX_VELOCITY)
-			vec = MAX_VELOCITY;
-		this->setVelocity(vec);
-	}
-	isReadyForNext = true;
+	
 }
