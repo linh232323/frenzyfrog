@@ -51,6 +51,7 @@ bool GameLayer::init()
     this->setTouchEnabled(true);
     this->initFrames();
     this->initBackground();    
+	this->initCrocodile();
     this->initLeafs();
 	this->initFrog();
     this->schedule(schedule_selector(GameLayer::updateGame), 0.01f);    
@@ -66,13 +67,16 @@ bool GameLayer::init()
 	return true;
 }
 
-void::GameLayer::initFrames()
+void GameLayer::initFrames()
 {
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("game.plist");
 	
 
 }
-
+void GameLayer::initCrocodile(){
+	m_crocodile = CCSprite::createWithSpriteFrameName("crocodile.png");
+	m_pBatchNode->addChild(m_crocodile);
+}
 void GameLayer::initBackground()
 {
 	m_backgroundNode = CCParallaxNodeExtras::node();
@@ -174,6 +178,12 @@ void GameLayer::initFrog()
 		arrFrameJump->addObject(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("frog_0%d.png",i)->getCString()));
 	}	
 	m_frog->setPosition(ccp(m_frog->getContentSize().width/2, 9999));	
+
+	arrFrameWaterSplash = new CCArray();
+	for(int i=1;i<7;i++)
+	{
+		arrFrameWaterSplash->addObject(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(CCString::createWithFormat("water_0%d.png",i)->getCString()));
+	}
 	m_pBatchNode->addChild(m_frog,9999);
 }
 
@@ -316,6 +326,8 @@ void GameLayer::updateLeaf(float dt)
 		{
 			this->setVelocity(0);			
 			isPrepare = false;
+
+
 		}
 	}
 }
@@ -327,7 +339,7 @@ void GameLayer::updateFrog(float dt)
 	
 	if(m_frog->getPositionY() < 0)
 	{
-		changeEndSceneResult();
+		changeEndSceneResult(RESULT_W);
 	}
 }
 void GameLayer::onTheLeaf()
@@ -338,7 +350,8 @@ void GameLayer::onTheLeaf()
 		int typeLeaf = ((CCLeaf *)crtLeafObj)->getLeafType();
 		if(depth != crtDepth + 1 || typeLeaf == 0)
 		{
-			changeEndSceneResult();
+			((CCLeaf *)crtLeafObj)->getSprite()->setVisible(false);
+			changeEndSceneResult(RESULT_C);
 		}
 		else
 		{
@@ -359,17 +372,36 @@ void GameLayer::onTheLeaf()
 		((CCLeaf *)crtLeafObj)->getSprite()->runAction(sq);
 	}
 }
-void GameLayer::changeEndSceneResult()
+void GameLayer::changeEndSceneResult(int type_result)
 {
+	this->setResultType(type_result);	
+	isPause = true;
+	if(type_result == RESULT_W){
+		
+		changeAction();
+	}
+	else{		
+		m_frog->stopAllActions();
+		CCAnimation *animWater = CCAnimation::createWithSpriteFrames(arrFrameWaterSplash,0.1f);
+		CCAnimate *actWaterSplash = CCAnimate::create(animWater);				
+
+		m_frog->runAction(CCSequence::create(actWaterSplash,
+					CCCallFunc::create(this, callfunc_selector(GameLayer::changeAction)),					
+					NULL));										
+	}
+	
+}
+void GameLayer::changeAction(){
 	User::Instance().setCrtScore(m_nScore);
 	if(User::Instance().getBestScore() < User::Instance().getCrtScore()){
 		User::Instance().setBestScore(User::Instance().getCrtScore());
 		User::Instance().SaveData();
 	}
-	CCScene *pScene = EndScene::scene(RESULT_C);				
-	CCDirector::sharedDirector()->replaceScene(pScene);
+	CCScene *endScene = EndScene::scene(this->getResultType());				
+	CCDirector::sharedDirector()->replaceScene(endScene);
+	
+	
 }
-
 void GameLayer::completeJump()
 {
 	

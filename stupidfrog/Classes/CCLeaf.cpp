@@ -78,7 +78,7 @@ void CCLeaf::updateSelf(float dt,CCPoint backgroundScrollVert)
 {
 	if(this->getEnable() && m_pSprite != NULL){
 
-		if(this->getSprite()->getPositionY() - this->getSprite()->getContentSize().width/2 < 0 )
+		if(this->getSprite()->getPositionY() + this->getSprite()->getContentSize().width/2 < 0 )
 		{
 			removeSelf();
 		}

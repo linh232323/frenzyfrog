@@ -47,17 +47,26 @@ bool EndScene::initWithResult(int result)
 
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("game.plist");
 
-	CCSprite *bgSprite = CCSprite::create("main_bg.png");
+	CCSprite *bgSprite;
+	
+	if(result == RESULT_C)
+		bgSprite = CCSprite::create("bg_result_cor.png");
+	else if(result == RESULT_W)
+		bgSprite = CCSprite::create("bg_result_w.png");
+	else
+		bgSprite = CCSprite::create("main_bg.png");
 	bgSprite->setPosition(ccp(winSize.width/2,winSize.height/2));
 	this->addChild(bgSprite);
 
+	CCLayer *layer = CCLayer::create();
+
 	CCSprite *panel = CCSprite::createWithSpriteFrameName("bg_ui.png");
 	panel->setPosition(ccp(winSize.width/2,winSize.height/2));
-	this->addChild(panel);
+	layer->addChild(panel);
 
 	CCSprite *game_over = CCSprite::createWithSpriteFrameName("game_over.png");
 	game_over->setPosition(ccp(winSize.width/2,winSize.height/2 + panel->getContentSize().height/2));
-	this->addChild(game_over);
+	layer->addChild(game_over);
 
 	//CCSprite *crocodile_avatar = CCSprite::createWithSpriteFrameName("crocodile_avatar.png");
 	//crocodile_avatar->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -93,28 +102,31 @@ bool EndScene::initWithResult(int result)
 
 	
 
-	this->addChild(menu);
+	layer->addChild(menu);
 	menu->setPosition(0,0);
 
 	CCSprite *lbScore = CCSprite::createWithSpriteFrameName("score_lb.png");
 	lbScore->setPosition(ccp(winSize.width *0.3,winSize.height/2));
-	this->addChild(lbScore);
+	layer->addChild(lbScore);
 
 	CCSprite *lbBest = CCSprite::createWithSpriteFrameName("best_lb.png");
 	lbBest->setPosition(ccp(winSize.width *0.3,winSize.height/2 + 150));	
-	this->addChild(lbBest);
+	layer->addChild(lbBest);
 
 	CCLabelBMFont *lbcScore = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getCrtScore())->getCString(),"UVNBanhMiRed.fnt");
 	lbcScore->setPosition(ccp(winSize.width *0.6,winSize.height/2 + 17));
 	lbcScore->setScale(1.4f);
-	this->addChild(lbcScore);
+	layer->addChild(lbcScore);
 
 	CCLabelBMFont *lbcBest = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getBestScore())->getCString(),"UVNBanhMiRed.fnt");
 	lbcBest->setScale(1.4f);
 	lbcBest->setPosition(ccp(winSize.width *0.6,winSize.height/2 + 167));
 	
-	this->addChild(lbcBest);
+	layer->addChild(lbcBest);
 
+	this->addChild(layer);
+	layer->setPosition(0,-winSize.height);
+	layer->runAction(CCSequence::create(CCDelayTime::create(1.0f),CCMoveTo::create(0.2f,ccp(0,0)),NULL));
     return true;
 }
 

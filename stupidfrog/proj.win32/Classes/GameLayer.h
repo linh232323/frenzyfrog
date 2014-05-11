@@ -34,10 +34,12 @@ public:
 	CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode2, BatchNode2);    
 	CC_SYNTHESIZE(int, m_crtLeaf, CrtLeaf);    
 	CC_SYNTHESIZE(int, m_nextLeft, NextLeaf);    
+	CC_SYNTHESIZE(int, m_result_type,ResultType);    
     CC_SYNTHESIZE_RETAIN(cocos2d::CCArray *, m_pLeafs, Leafs);
 	CC_SYNTHESIZE(int , m_vec, Velocity);
 	
 	CC_SYNTHESIZE(CCArray *, arrFrameJump,FramesJump);
+	CC_SYNTHESIZE(CCArray *, arrFrameWaterSplash,FramesWaterSplash);
 
 	//std::vector<CCLeaf *> Leafs;
 	
@@ -49,6 +51,7 @@ private:
     int m_nScore;
     void initFishes();
     void initBackground();    
+	void initCrocodile();
     void initFrames();
 	void initLeafs();
 	void initFrog();
@@ -56,7 +59,8 @@ private:
     void updateGame(float dt);  
 	void updateFrog(float dt);
 	void updateLeaf(float dt);
-	void changeEndSceneResult();
+	void changeEndSceneResult(int type_result);
+	void changeAction();
 	void onTheLeaf();
     void addLeaf();
 
@@ -64,7 +68,9 @@ private:
 	CCParallaxNodeExtras * m_backgroundNode;
     CCSprite * water1;
 	CCSprite * water2;
-	CCSprite * m_frog;
+	CCSprite * m_frog;	
+	CCSprite * m_crocodile;
+	bool isDown;
 	CCPoint  crtLeaf;
 	CCObject * crtLeafObj;
 
@@ -79,7 +85,7 @@ private:
 	bool isPause;
 
 	CCLabelBMFont *lbScore;
-
+	
 	
 };
 
