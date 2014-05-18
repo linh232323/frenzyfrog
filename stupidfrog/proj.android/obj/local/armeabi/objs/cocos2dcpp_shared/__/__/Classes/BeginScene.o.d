@@ -203,9 +203,7 @@ obj/local/armeabi/objs/cocos2dcpp_shared/__/__/Classes/BeginScene.o: \
  /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../cocos2dx/support/data_support/uthash.h \
  /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../cocos2dx/support/component/CCComponent.h \
  /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../cocos2dx/support/component/CCComponentContainer.h \
- jni/../../Classes/GameLayer.h jni/../../Classes/CCParallaxNodeExtras.h \
- /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/SimpleAudioEngine.h \
- /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/Export.h
+ jni/../../Classes/MenuScene.h
 
 jni/../../Classes/BeginScene.h:
 
@@ -615,10 +613,4 @@ jni/../../Classes/BeginScene.h:
 
 /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../cocos2dx/support/component/CCComponentContainer.h:
 
-jni/../../Classes/GameLayer.h:
-
-jni/../../Classes/CCParallaxNodeExtras.h:
-
-/cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/SimpleAudioEngine.h:
-
-/cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/Export.h:
+jni/../../Classes/MenuScene.h:

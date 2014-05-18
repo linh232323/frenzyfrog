@@ -39,6 +39,12 @@
     <ClCompile Include="Classes\Utils.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Classes\NormalGameLayer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\MenuScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -72,6 +78,12 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Classes\Utils.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\NormalGameLayer.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\MenuScene.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>

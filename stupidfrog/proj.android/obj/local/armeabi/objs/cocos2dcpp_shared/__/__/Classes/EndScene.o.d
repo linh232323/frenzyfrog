@@ -206,8 +206,9 @@ obj/local/armeabi/objs/cocos2dcpp_shared/__/__/Classes/EndScene.o: \
  jni/../../Classes/GameLayer.h jni/../../Classes/CCParallaxNodeExtras.h \
  /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/SimpleAudioEngine.h \
  /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/Export.h \
- jni/../../Classes/UserModel.h jni/../../Classes/lib/sqlite/sqlite3.h \
- jni/../../Classes/Utils.h jni/../../Classes/lib/rapidjson/document.h \
+ jni/../../Classes/NormalGameLayer.h jni/../../Classes/UserModel.h \
+ jni/../../Classes/lib/sqlite/sqlite3.h jni/../../Classes/Utils.h \
+ jni/../../Classes/lib/rapidjson/document.h \
  jni/../../Classes/lib/rapidjson/reader.h \
  jni/../../Classes/lib/rapidjson/rapidjson.h \
  /cygdrive/g/Cocos2dx/android-ndk-r9/sources/cxx-stl/gnu-libstdc++/4.6/include/cassert \
@@ -634,6 +635,8 @@ jni/../../Classes/CCParallaxNodeExtras.h:
 /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/SimpleAudioEngine.h:
 
 /cygdrive/g/Cocos2dx/framework/cocos2d-x-2.2.1/projects/stupidfrog/proj.android/../../../CocosDenshion/android/../include/Export.h:
+
+jni/../../Classes/NormalGameLayer.h:
 
 jni/../../Classes/UserModel.h:
 

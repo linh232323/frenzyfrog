@@ -1,0 +1,97 @@
+//
+//  NormalGameLayer.h
+//  FishingJoy
+//
+//  Created by jie ding on 11/28/12.
+//
+//
+
+#ifndef __NormalNormalGameLayer__
+#define __NormalGameLayer__
+
+#include <iostream>
+#include "cocos2d.h"
+#include "CCParallaxNodeExtras.h"
+#include "SimpleAudioEngine.h"
+
+
+class NormalGameLayer : public cocos2d::CCLayer
+{
+public:
+    // Method 'init' in cocos2d-x returns bool, instead of 'id' in cocos2d-iphone (an object pointer)
+    NormalGameLayer();
+    virtual ~NormalGameLayer();
+    virtual bool init();
+    virtual void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+    virtual void ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+    
+    // there's no 'id' in cpp, so we recommend to return the class instance pointer
+    static cocos2d::CCScene* scene();
+    
+    // preprocessor macro for "static create()" constructor ( node() deprecated )
+    CREATE_FUNC(NormalGameLayer);
+    CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode, BatchNode);    
+	CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode2, BatchNode2);    
+	CC_SYNTHESIZE(int, m_crtLeaf, CrtLeaf);    
+	CC_SYNTHESIZE(int, m_nextLeft, NextLeaf);    
+	CC_SYNTHESIZE(int, m_result_type,ResultType);    
+    CC_SYNTHESIZE_RETAIN(cocos2d::CCArray *, m_pLeafs, Leafs);
+	CC_SYNTHESIZE(int , m_vec, Velocity);
+	
+	CC_SYNTHESIZE(CCArray *, arrFrameJump,FramesJump);
+	CC_SYNTHESIZE(CCArray *, arrFrameWaterSplash,FramesWaterSplash);
+
+	//std::vector<CCLeaf *> Leafs;
+	
+private:    
+
+	CCSize winSize;
+	CCPoint origin;
+
+    int m_nScore;
+	bool firstTime;
+	float startGame;
+
+    void initFishes();
+    void initBackground();    
+	void initCrocodile();
+    void initFrames();
+	void initLeafs();
+	void initFrog();
+	void initFinalLayer();
+    void updateGame(float dt);  
+	void updateFrog(float dt);
+	void updateLeaf(float dt);
+	void changeEndSceneResult(int type_result);
+	void changeAction();
+	void onTheLeaf();
+    void addLeaf();
+	float getTimeTick();
+
+
+	
+	CCParallaxNodeExtras * m_backgroundNode;
+    CCSprite * water1;
+	CCSprite * water2;
+	CCSprite * m_frog;	
+	CCSprite * m_crocodile;
+	bool isDown;
+	CCPoint  crtLeaf;
+	CCObject * crtLeafObj;
+
+	int crtDepth;
+	int crtGenDepth;
+	bool isFollow;
+
+	void completeJump();
+	bool isPrepare;
+	bool isReady;
+	bool isReadyForNext;
+	bool isPause;
+
+	CCLabelBMFont *lbScore;
+	CCLabelBMFont *lbTime;
+	
+};
+
+#endif /* defined(__FishingJoy__NormalGameLayer__) */

@@ -1,11 +1,12 @@
 #include "EndScene.h"
 #include "GameLayer.h"
+#include "NormalGameLayer.h"
 #include "UserModel.h"
 USING_NS_CC;
 
-EndScene* EndScene::createWithResult(int result){
+EndScene* EndScene::createWithResult(int mode,int result){
 	 EndScene *endscene = new EndScene();
-    if(endscene && endscene->initWithResult(result))
+    if(endscene && endscene->initWithResult(mode,result))
     {
         endscene->autorelease();
         return endscene;
@@ -17,13 +18,13 @@ EndScene* EndScene::createWithResult(int result){
     }
 }
 
-CCScene* EndScene::scene(int result)
+CCScene* EndScene::scene(int mode,int result)
 {
     // 'scene' is an autorelease object
     CCScene *scene = CCScene::create();
     
     // 'layer' is an autorelease object
-    EndScene *layer = EndScene::createWithResult(result);
+    EndScene *layer = EndScene::createWithResult(mode,result);
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -33,7 +34,7 @@ CCScene* EndScene::scene(int result)
 }
 
 // on "init" you need to initialize your instance
-bool EndScene::initWithResult(int result)
+bool EndScene::initWithResult(int mode,int result)
 {
     //////////////////////////////
     // 1. super init first
@@ -45,14 +46,15 @@ bool EndScene::initWithResult(int result)
     CCSize winSize = CCDirector::sharedDirector()->getVisibleSize();
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 
+	this->setMode(mode);
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("game.plist");
 
 	CCSprite *bgSprite;
 	
 	if(result == RESULT_C)
-		bgSprite = CCSprite::create("bg_result_cor.png");
-	else if(result == RESULT_W)
 		bgSprite = CCSprite::create("bg_result_w.png");
+	else if(result == RESULT_W)
+		bgSprite = CCSprite::create("bg_result_cor.png");
 	else
 		bgSprite = CCSprite::create("main_bg.png");
 	bgSprite->setPosition(ccp(winSize.width/2,winSize.height/2));
@@ -113,12 +115,35 @@ bool EndScene::initWithResult(int result)
 	lbBest->setPosition(ccp(winSize.width *0.3,winSize.height/2 + 150));	
 	layer->addChild(lbBest);
 
-	CCLabelBMFont *lbcScore = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getCrtScore())->getCString(),"UVNBanhMiRed.fnt");
+	CCLabelBMFont *lbcScore;
+	switch(this->getMode()){
+		case MODE_NORMAL:
+			lbcScore = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getCrtScore2())->getCString(),"UVNBanhMiRed.fnt");
+			break;
+		case MODE_ENDLESS:
+			lbcScore = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getCrtScore())->getCString(),"UVNBanhMiRed.fnt");
+			break;
+		default:
+			lbcScore = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getCrtScore())->getCString(),"UVNBanhMiRed.fnt");
+			break;
+	}
+	
 	lbcScore->setPosition(ccp(winSize.width *0.6,winSize.height/2 + 17));
 	lbcScore->setScale(1.4f);
 	layer->addChild(lbcScore);
 
-	CCLabelBMFont *lbcBest = CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getBestScore())->getCString(),"UVNBanhMiRed.fnt");
+	CCLabelBMFont *lbcBest;
+	switch(this->getMode()){
+	case MODE_NORMAL:
+		lbcBest	= CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getBestScore2())->getCString(),"UVNBanhMiRed.fnt");
+		break;
+	case MODE_ENDLESS:
+		lbcBest	= CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getBestScore())->getCString(),"UVNBanhMiRed.fnt");
+		break;
+	default:
+		lbcBest	= CCLabelBMFont::create(CCString::createWithFormat("%d",User::Instance().getBestScore())->getCString(),"UVNBanhMiRed.fnt");
+		break;
+	}
 	lbcBest->setScale(1.4f);
 	lbcBest->setPosition(ccp(winSize.width *0.6,winSize.height/2 + 167));
 	
@@ -132,7 +157,19 @@ bool EndScene::initWithResult(int result)
 
 void EndScene::replay(CCObject *sender)
 {
-	CCScene *pScene = GameLayer::scene();		
+	CCScene *pScene;
+	switch(this->getMode()){
+	case MODE_NORMAL:
+		pScene = NormalGameLayer::scene();		
+		break;
+		case MODE_ENDLESS:
+			pScene = GameLayer::scene();		
+		break;
+		default:
+			pScene = GameLayer::scene();		
+			break;
+	}
+	 
 		
 	CCDirector::sharedDirector()->replaceScene(pScene);
 }

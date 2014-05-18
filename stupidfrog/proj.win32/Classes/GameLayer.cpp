@@ -3,6 +3,7 @@
 #include "CCFrog.h"
 #include "GameLayer.h"
 #include "UserModel.h"
+#include "math.h"
 
 
 #define MAX_LEAF_COUNT 30
@@ -10,7 +11,7 @@
 
 #define MAX_FRESH_LEAF 10
 #define MAX_DEAD_LEAF 40
-#define MAX_VELOCITY 450
+#define MAX_VELOCITY 400
 
 #define FRESH_LEAF 1
 #define DEAD_LEAF 0
@@ -98,14 +99,26 @@ void GameLayer::initBackground()
 	
 	//m_backgroundNode->addChild(water1, 0, dustSpeed,	ccp(winSize.width/2,0) ); // 2
 	//m_backgroundNode->addChild(water2, 0, dustSpeed,	ccp(winSize.width/2,water1->getContentSize().height));
-	
+	winSize = CCDirector::sharedDirector()->getWinSize();
+	origin = CCDirector::sharedDirector()->getVisibleOrigin();
+	CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage("game.png");	
+    this->setBatchNode(CCSpriteBatchNode::createWithTexture(texture));	
+    this->addChild(m_pBatchNode);
 	
 }
 
 void GameLayer::initFinalLayer()
 {
+
+
 	CCSprite * green_bg = CCSprite::create("green_bg.png");
 	green_bg->setPosition(ccp(origin.x + winSize.width/2,origin.y  +  winSize.height/2));
+	CCScaleTo *scaleOut = CCScaleTo::create(3.0f,1.02f,1.035f);
+	CCScaleTo *scaleIn = CCScaleTo::create(3.0f,1.0f,1.0f);
+
+	CCSequence *sqBG = CCSequence::create(scaleOut,scaleIn,NULL);
+	CCRepeatForever *repeateBG = CCRepeatForever::create(sqBG);
+	green_bg->runAction(repeateBG);
 	this->addChild(green_bg);
 	CCSprite *bubble_02 = CCSprite::createWithSpriteFrameName("bubble_02.png");
 	bubble_02->setPosition(ccp(winSize.width/2,winSize.height/2 - green_bg->getContentSize().height/2 + bubble_02->getContentSize().height/2 ));
@@ -145,12 +158,9 @@ void GameLayer::initFinalLayer()
 
 void GameLayer::initLeafs()
 {
-	winSize = CCDirector::sharedDirector()->getWinSize();
-	origin = CCDirector::sharedDirector()->getVisibleOrigin();
+	
     this->setLeafs(CCArray::createWithCapacity(MAX_FRESH_LEAF + MAX_DEAD_LEAF));            
-	CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage("game.png");	
-    this->setBatchNode(CCSpriteBatchNode::createWithTexture(texture));	
-    this->addChild(m_pBatchNode);
+	
 	//m_pBatchNode->setPosition(ccp(origin.x - winSize.width/2,origin.y  -  winSize.height/2));
     m_pLeafs->removeAllObjects();
 	
@@ -255,15 +265,26 @@ void GameLayer::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 			CCLeaf *pLeaf = (CCLeaf *)pLeafObj;
 
 			if(pLeaf->getSprite()->boundingBox().containsPoint(pt)){					
+			/*	CCScaleTo *scaleOutAction = CCScaleTo::create(0.0f,1.1f);
+				CCScaleTo *scaleInAction = CCScaleTo::create(0.2f,1.00f);
+				CCSequence *sq = CCSequence::create(scaleOutAction,scaleInAction,NULL);
+				pLeaf->getSprite()->runAction(sq);*/
+
 				m_frog->stopAllActions();
 				crtLeaf = pLeaf->getSprite()->getPosition();
 				int depth = pLeaf->getDepth(); 
+				int typeLeaf = pLeaf->getLeafType();
 				if(depth > crtDepth + 1 )
 				{
 					crtLeaf.y -= pLeaf->getSprite()->getContentSize().width/2;
+					isReadyForNext = false;
+				}
+				if(depth != crtDepth + 1 || typeLeaf == 0)
+				{
+					isReadyForNext = false;
 				}
 				crtLeafObj = pLeafObj;
-				int speed = 2500;
+				int speed = 5000;
 				float duration = crtLeaf.getDistance(m_frog->getPosition()) / speed;					
 				
 				float angle = atan2f(crtLeaf.y - m_frog->getPosition().y, crtLeaf.x - m_frog->getPosition().x) / M_PI * 180.0f;
@@ -277,9 +298,29 @@ void GameLayer::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 					CCRotateTo::create(0.01f,0),
 					CCCallFunc::create(this, callfunc_selector(GameLayer::completeJump)),
 					NULL));								
+
+				if(isReadyForNext){
+					crtDepth += 1;
+					m_nScore += 10;
+					lbScore->setString(CCString::createWithFormat("Score: %d",m_nScore)->getCString());
+					
+					int vec = 200;
+								
+					float a = 25;
+					float b = 0.05;
+					float c = 200;
+
+					float fVec = a*exp(b*crtDepth) + c;
+					vec = int(fVec);
+					if(vec > MAX_VELOCITY)
+						vec = MAX_VELOCITY;
+					
+					this->setVelocity(vec);
+					
+				}
 				isReady = true;
 				isPause = false;
-				isReadyForNext = false;
+				
 				return;
 			}}
 		}    
@@ -348,23 +389,16 @@ void GameLayer::onTheLeaf()
 	{
 		int depth = ((CCLeaf *)crtLeafObj)->getDepth();
 		int typeLeaf = ((CCLeaf *)crtLeafObj)->getLeafType();
-		if(depth != crtDepth + 1 || typeLeaf == 0)
+		if(!isReadyForNext)
 		{
 			((CCLeaf *)crtLeafObj)->getSprite()->setVisible(false);
 			changeEndSceneResult(RESULT_C);
 		}
 		else
 		{
-			crtDepth += 1;
-			m_nScore += 10;
-			lbScore->setString(CCString::createWithFormat("Score: %d",m_nScore)->getCString());
-
-			int vec = 25 * crtDepth + 100;
-			if(vec > MAX_VELOCITY)
-				vec = MAX_VELOCITY;
-			this->setVelocity(vec);
+		
 		}
-		isReadyForNext = true;
+		
 
 		CCScaleTo *scaleOutAction = CCScaleTo::create(0.0f,1.1f);
 		CCScaleTo *scaleInAction = CCScaleTo::create(0.2f,1.00f);
@@ -397,7 +431,7 @@ void GameLayer::changeAction(){
 		User::Instance().setBestScore(User::Instance().getCrtScore());
 		User::Instance().SaveData();
 	}
-	CCScene *endScene = EndScene::scene(this->getResultType());				
+	CCScene *endScene = EndScene::scene(MODE_ENDLESS,this->getResultType());				
 	CCDirector::sharedDirector()->replaceScene(endScene);
 	
 	

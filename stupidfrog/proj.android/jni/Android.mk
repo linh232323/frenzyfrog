@@ -14,7 +14,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/lib/sqlite/sqlite3.c \
                    ../../Classes/Utils.cpp \
                    ../../Classes/BeginScene.cpp \
+                   ../../Classes/MenuScene.cpp \
                    ../../Classes/CCParallaxNodeExtras.cpp \
+				   ../../Classes/NormalGameLayer.cpp \
                    ../../Classes/EndScene.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes

@@ -21,7 +21,7 @@ void User::SaveData(){
 	int result;
 	sqlite3* pDB;
 	std::string dbPath = CCFileUtils::sharedFileUtils()->getWritablePath();
-	dbPath.append("Settings.db");
+	dbPath.append("data.db");
 	
 	result = sqlite3_open(dbPath.c_str(),&pDB);
 	if (result != SQLITE_OK){		
@@ -29,7 +29,13 @@ void User::SaveData(){
 		return;
 	}
 
-	sqlstr = CCString::createWithFormat("UPDATE `users` SET best_score=%d,crt_score=%d WHERE id='%s'",User::Instance().getBestScore(),User::Instance().getCrtScore(),User::Instance().getID().c_str());			 	
+	sqlstr = CCString::createWithFormat("UPDATE `users` SET best_score=%d,crt_score=%d,best_score2=%d,crt_score2=%d WHERE id='%s'",
+		User::Instance().getBestScore(),
+		User::Instance().getCrtScore(),
+		User::Instance().getBestScore2(),
+		User::Instance().getCrtScore2(),
+		User::Instance().getID().c_str());			 	
+
 	result = sqlite3_exec(pDB,(char*)sqlstr->getCString(),NULL,NULL,&errMsg);
 	if( result != SQLITE_OK ){
 		 CCLOG("SQL error: %s\n", errMsg);
@@ -56,7 +62,7 @@ void User::LoadData(){
 		return;
 	}
 
-	sqlstr = CCString::createWithFormat("CREATE TABLE `users` (id varchar(32) primary key,crt_score INT,best_score INT)");
+	sqlstr = CCString::createWithFormat("CREATE TABLE `users` (id varchar(32) primary key,crt_score INT,best_score INT,crt_score2 INT,best_score2 INT)");
 	result = sqlite3_exec(pDB,(char*)sqlstr->getCString(),NULL,NULL,&errMsg);
 	if( result != SQLITE_OK ){
 		CCLOG("SQL: error: %s\n", errMsg);	
@@ -74,7 +80,7 @@ void User::LoadData(){
 
 	if(User::Instance().getBestScore() == 0){
 		User::Instance().setID(Utils::getUniqueId());
-		sqlstr = CCString::createWithFormat("INSERT INTO `users` VALUES ('%s',%d,%d)", getID().c_str(), 0,0);						
+		sqlstr = CCString::createWithFormat("INSERT INTO `users` VALUES ('%s',%d,%d,%d,%d)", getID().c_str(), 0,0,999999,99999);						
 		result = sqlite3_exec(pDB,(char*)sqlstr->getCString(),NULL,NULL,&errMsg);
 		if( result != SQLITE_OK ){
 			CCLOG("SQL error: %s\n", errMsg);
@@ -91,6 +97,10 @@ int User::callback(void *data, int argc, char **argv, char **azColName){
 		  User::Instance().setCrtScore(atoi(argv[i]));
 	  }else if(strcmp(azColName[i] , "best_score") ==0){
 		  User::Instance().setBestScore(atoi(argv[i]));
+	  }else if(strcmp(azColName[i] , "crt_score2") ==0){
+		  User::Instance().setCrtScore2(atoi(argv[i]));
+	  }else if(strcmp(azColName[i] , "best_score2") ==0){
+		  User::Instance().setBestScore2(atoi(argv[i]));
 	  }	   
    }   
    return 0;

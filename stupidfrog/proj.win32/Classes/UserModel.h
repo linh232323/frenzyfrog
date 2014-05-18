@@ -27,7 +27,8 @@ public:
 	CC_SYNTHESIZE(std::string, id , ID);
 	CC_SYNTHESIZE(int, crt_score , CrtScore);
 	CC_SYNTHESIZE(int, best_score , BestScore);
-	
+	CC_SYNTHESIZE(int, best_score2 , BestScore2);
+	CC_SYNTHESIZE(int, crt_score2 , CrtScore2);
 	double				lastTimeCharge;
 	
 	static int callback(void *data, int argc, char **argv, char **azColName);

@@ -17,10 +17,18 @@ public:
     
     // implement the "static node()" method manually
     CREATE_FUNC(BeginScene);
+
+	cocos2d::CCSprite *m_frog;
+	cocos2d::CCSprite *m_leaf1;
+	cocos2d::CCSprite *m_leaf2;
+
 private :
 	void replay(CCObject *sender);
 	void ranking(CCObject *sender);
 	void close(CCObject *sender);
+	void onComplete();
+	void changeScene();
+	
 
 };
 

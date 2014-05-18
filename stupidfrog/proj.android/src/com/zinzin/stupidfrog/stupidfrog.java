@@ -25,8 +25,18 @@ package com.zinzin.stupidfrog;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.AsyncFacebookRunner.RequestListener;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.FacebookError;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -35,17 +45,33 @@ import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class stupidfrog extends Cocos2dxActivity{
 	
+	private static String APP_FB_ID = "576695625778343"; // Replace your App ID here
+	 // Instance of Facebook Class
+    private  Facebook facebook;
+    @SuppressWarnings("deprecation")
+	private  AsyncFacebookRunner mAsyncRunner;
+    String FILENAME = "AndroidSSO_data";
+    private static SharedPreferences mPrefs;
+    
     protected void onCreate(Bundle savedInstanceState){
+    	
 		super.onCreate(savedInstanceState);	
+		
+		facebook = new Facebook(APP_FB_ID);
+        mAsyncRunner = new AsyncFacebookRunner(facebook);
+        
+        
 	}
 
     public Cocos2dxGLSurfaceView onCreateView() {
     	Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this);
     	// stupidfrog should create stencil buffer
     	glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
+    	
     	
     	return glSurfaceView;
     }
@@ -101,5 +127,105 @@ public class stupidfrog extends Cocos2dxActivity{
 	}
     static {
         System.loadLibrary("cocos2dcpp");
-    }     
+    }   
+    @SuppressWarnings("deprecation")
+	public void postToWall() {
+        // post on user's wall.
+        facebook.dialog(this, "feed", new DialogListener() {
+     
+            @Override
+            public void onFacebookError(FacebookError e) {
+            }
+     
+            @Override
+            public void onError(DialogError e) {
+            }
+     
+            @Override
+            public void onComplete(Bundle values) {
+            }
+     
+            @Override
+            public void onCancel() {
+            }
+        });
+     
+    }
+    @SuppressWarnings("deprecation")
+	public void loginToFacebook() {
+        mPrefs = getPreferences(MODE_PRIVATE);
+        String access_token = mPrefs.getString("access_token", null);
+        long expires = mPrefs.getLong("access_expires", 0);
+     
+        if (access_token != null) {
+            facebook.setAccessToken(access_token);
+        }
+     
+        if (expires != 0) {
+            facebook.setAccessExpires(expires);
+        }
+     
+        if (!facebook.isSessionValid()) {
+            facebook.authorize(this,
+                    new String[] { "email", "publish_stream" },
+                    new DialogListener() {
+     
+                        @Override
+                        public void onCancel() {
+                            // Function to handle cancel event
+                        }
+     
+                        @SuppressWarnings("deprecation")
+						@Override
+                        public void onComplete(Bundle values) {
+                            // Function to handle complete event
+                            // Edit Preferences and update facebook acess_token
+                            SharedPreferences.Editor editor = mPrefs.edit();
+                            editor.putString("access_token",
+                                    facebook.getAccessToken());
+                            editor.putLong("access_expires",
+                                    facebook.getAccessExpires());
+                            editor.commit();
+                        }
+     
+                        @Override
+                        public void onError(DialogError error) {
+                            // Function to handle error
+     
+                        }
+     
+                        @Override
+                        public void onFacebookError(FacebookError fberror) {
+                            // Function to handle Facebook errors
+     
+                        }
+     
+                    });
+        }
+    }
+    
+    @SuppressWarnings("deprecation")
+	public void postFeed(){
+    	// post on user's wall.
+        facebook.dialog(this, "feed", new DialogListener() {
+     
+            @Override
+            public void onFacebookError(FacebookError e) {
+            }
+     
+            @Override
+            public void onError(DialogError e) {
+            }
+     
+            @Override
+            public void onComplete(Bundle values) {
+            }
+     
+            @Override
+            public void onCancel() {
+            }
+        });
+     
+    }
+   
 }
